@@ -1,5 +1,6 @@
 package test.task.service;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import test.task.config.AppConfiguration;
@@ -15,8 +16,10 @@ import java.util.List;
 import static test.task.utils.JsonInfoModel.getCryptoInfoFromJsonCEX;
 import static test.task.utils.JsonInfoModel.getJsonFromUrl;
 
+//TODO сделать логгер в файл
 @Service
 public class CryptocurrencyService {
+    static final Logger logger = Logger.getLogger(CryptocurrencyService.class);
 
     private final AppConfiguration appConfiguration;
     private final CryptocurrencyInfoRepository cryptoInfoRepo;
@@ -52,7 +55,7 @@ public class CryptocurrencyService {
             List<CryptocurrencyInfoModel> cryptocurrencyInfo = getCryptocurrencyInfo();
             cryptoInfoRepo.saveAll(cryptocurrencyInfo);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.warn(e.getMessage());
         }
     }
 }
