@@ -7,7 +7,9 @@ import test.task.model.CryptocurrencyInfoModel;
 import test.task.repository.CryptocurrencyInfoRepository;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static test.task.utils.JsonInfoModel.getCryptoInfoFromJsonCEX;
@@ -33,10 +35,16 @@ public class CryptocurrencyService {
         for (String currencyPair : appConfiguration.currencyPairList()) {
             String url = String.format("https://cex.io/api/last_price/%s", currencyPair);
             JSONObject json = getJsonFromUrl(url);
-            cryptoInfoList.add(getCryptoInfoFromJsonCEX(json));
+            cryptoInfoList.add(setCurrentDate(getCryptoInfoFromJsonCEX(json)));
         }
 
         return cryptoInfoList;
+    }
+
+    private CryptocurrencyInfoModel setCurrentDate(CryptocurrencyInfoModel cryptoInfo) {
+        cryptoInfo.setCreatedAt(new SimpleDateFormat(appConfiguration.dateFormat())
+                .format(new Date()));
+        return cryptoInfo;
     }
 
     public void saveCryptocurrencyInfo() {

@@ -11,3 +11,5 @@ app:
     currencyPairList[0]: BTC/USD
     currencyPairList[1]: ETH/USD
     currencyPairList[2]: XRP/USD
+
+    dateFormat: yyyy-MM-dd HH:mm:ssZ
