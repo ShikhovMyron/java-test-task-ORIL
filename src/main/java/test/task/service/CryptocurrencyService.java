@@ -5,7 +5,7 @@ import org.json.JSONObject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import test.task.config.AppConfiguration;
+import test.task.config.AppProperties;
 import test.task.entity.CryptocurrencyInfoEntity;
 import test.task.exeption.NonexistentCurrencyName;
 import test.task.repository.CryptocurrencyInfoRepository;
@@ -24,13 +24,13 @@ import static test.task.utils.JsonInfoUtils.getJsonFromUrl;
 public class CryptocurrencyService {
     static final Logger logger = Logger.getLogger(CryptocurrencyService.class);
 
-    private final AppConfiguration appConfiguration;
+    private final AppProperties appProperties;
     private final CryptocurrencyInfoRepository cryptoInfoRepo;
 
     public CryptocurrencyService(
-            AppConfiguration appConfiguration, CryptocurrencyInfoRepository cryptoInfoRepo
+            AppProperties appProperties, CryptocurrencyInfoRepository cryptoInfoRepo
     ) {
-        this.appConfiguration = appConfiguration;
+        this.appProperties = appProperties;
         this.cryptoInfoRepo = cryptoInfoRepo;
     }
 
@@ -38,7 +38,7 @@ public class CryptocurrencyService {
     public List<CryptocurrencyInfoEntity> getCryptocurrencyInfo() throws IOException {
         List<CryptocurrencyInfoEntity> cryptoInfoList = new ArrayList<>();
 
-        for (String currencyPair : appConfiguration.currencyPairList()) {
+        for (String currencyPair : appProperties.currencyPairList()) {
             String url = String.format("https://cex.io/api/last_price/%s", currencyPair);
             JSONObject json = getJsonFromUrl(url);
             cryptoInfoList.add(setCurrentDate(getCryptoInfoFromJsonCEX(json)));
@@ -48,7 +48,7 @@ public class CryptocurrencyService {
     }
 
     private CryptocurrencyInfoEntity setCurrentDate(CryptocurrencyInfoEntity cryptoInfo) {
-        cryptoInfo.setCreatedAt(new SimpleDateFormat(appConfiguration.dateFormat())
+        cryptoInfo.setCreatedAt(new SimpleDateFormat(appProperties.dateFormat())
                 .format(new Date()));
         return cryptoInfo;
     }
@@ -83,7 +83,7 @@ public class CryptocurrencyService {
     }
 
     private boolean isExistentCurrencyName(String currencyName) {
-        for (String s : appConfiguration.currencyPairList()) {
+        for (String s : appProperties.currencyPairList()) {
             if (s.split("/")[0].equals(currencyName)) {
                 return true;
             }
