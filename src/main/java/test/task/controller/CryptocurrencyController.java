@@ -12,7 +12,7 @@ import test.task.service.CryptocurrencyService;
 @RequestMapping("/cryptocurrencies")
 public class CryptocurrencyController {
 
-    static final Logger logger = Logger.getLogger(CryptocurrencyController.class);
+   private static final Logger logger = Logger.getLogger(CryptocurrencyController.class);
     private final CryptocurrencyService cryptocurrencyService;
 
     public CryptocurrencyController(CryptocurrencyService cryptocurrencyService) {

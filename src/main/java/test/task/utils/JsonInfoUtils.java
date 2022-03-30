@@ -3,7 +3,7 @@ package test.task.utils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
-import test.task.entity.CryptocurrencyInfoEntity;
+import test.task.entity.CryptoDataPrice;
 
 import java.io.*;
 import java.net.URL;
@@ -12,11 +12,11 @@ import java.nio.charset.StandardCharsets;
 public class JsonInfoUtils {
     static final Logger logger = Logger.getLogger(JsonInfoUtils.class);
 
-    public static CryptocurrencyInfoEntity getCryptoInfoFromJsonCEX(JSONObject json) {
+    public static CryptoDataPrice getCryptoInfoFromJsonCEX(JSONObject json) {
         String price = json.getString("lprice");
         String currencyName = json.getString("curr1");
         String valueName = json.getString("curr2");
-        return new CryptocurrencyInfoEntity(price, currencyName, valueName);
+        return new CryptoDataPrice(price, currencyName, valueName);
     }
 
     public static JSONObject getJsonFromUrl(String url) throws IOException, JSONException {

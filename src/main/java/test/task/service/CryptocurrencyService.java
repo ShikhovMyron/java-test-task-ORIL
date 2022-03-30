@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import test.task.config.AppProperties;
-import test.task.entity.CryptocurrencyInfoEntity;
+import test.task.entity.CryptoDataPrice;
 import test.task.exeption.NonexistentCurrencyName;
 import test.task.repository.CryptocurrencyInfoRepository;
 
@@ -19,10 +19,9 @@ import java.util.List;
 import static test.task.utils.JsonInfoUtils.getCryptoInfoFromJsonCEX;
 import static test.task.utils.JsonInfoUtils.getJsonFromUrl;
 
-//TODO сделать логгер в файл
 @Service
 public class CryptocurrencyService {
-    static final Logger logger = Logger.getLogger(CryptocurrencyService.class);
+//    static final Logger logger = Logger.getLogger(CryptocurrencyService.class);
 
     private final AppProperties appProperties;
     private final CryptocurrencyInfoRepository cryptoInfoRepo;
@@ -34,38 +33,10 @@ public class CryptocurrencyService {
         this.cryptoInfoRepo = cryptoInfoRepo;
     }
 
-
-    public List<CryptocurrencyInfoEntity> getCryptocurrencyInfo() throws IOException {
-        List<CryptocurrencyInfoEntity> cryptoInfoList = new ArrayList<>();
-
-        for (String currencyPair : appProperties.currencyPairList()) {
-            String url = String.format("https://cex.io/api/last_price/%s", currencyPair);
-            JSONObject json = getJsonFromUrl(url);
-            cryptoInfoList.add(setCurrentDate(getCryptoInfoFromJsonCEX(json)));
-        }
-
-        return cryptoInfoList;
-    }
-
-    private CryptocurrencyInfoEntity setCurrentDate(CryptocurrencyInfoEntity cryptoInfo) {
-        cryptoInfo.setCreatedAt(new SimpleDateFormat(appProperties.dateFormat())
-                .format(new Date()));
-        return cryptoInfo;
-    }
-
-    public void saveCryptocurrencyInfo() {
-        try {
-            List<CryptocurrencyInfoEntity> cryptocurrencyInfo = getCryptocurrencyInfo();
-            cryptoInfoRepo.saveAll(cryptocurrencyInfo);
-        } catch (IOException e) {
-            logger.warn(e.getMessage());
-        }
-    }
-
     public String getMinCryptoPrice(String currencyName) throws NonexistentCurrencyName {
-        if (isExistentCurrencyName(currencyName)) {
-            CryptocurrencyInfoEntity currencyInfo = cryptoInfoRepo
-                    .findTopByCurrencyNameOrderByPriceAsc(currencyName);
+        if (isCurrencyExists(currencyName)) {
+            CryptoDataPrice currencyInfo = cryptoInfoRepo
+                    .findTopByBaseCurrencyOrderByPriceAsc(currencyName);
             return currencyInfo.getPrice();
         } else {
             throw new NonexistentCurrencyName(currencyName);
@@ -73,31 +44,31 @@ public class CryptocurrencyService {
     }
 
     public String getMaxCryptoPrice(String currencyName) throws NonexistentCurrencyName {
-        if (isExistentCurrencyName(currencyName)) {
-            CryptocurrencyInfoEntity currencyInfo = cryptoInfoRepo
-                    .findTopByCurrencyNameOrderByPriceDesc(currencyName);
+        if (isCurrencyExists(currencyName)) {
+            CryptoDataPrice currencyInfo = cryptoInfoRepo
+                    .findTopByBaseCurrencyOrderByPriceDesc(currencyName);
             return currencyInfo.getPrice();
         } else {
             throw new NonexistentCurrencyName(currencyName);
         }
     }
 
-    private boolean isExistentCurrencyName(String currencyName) {
-        for (String s : appProperties.currencyPairList()) {
-            if (s.split("/")[0].equals(currencyName)) {
+    private boolean isCurrencyExists(String currencyName) {
+        for (String baseCurrency : appProperties.currencyPairs().keySet()) {
+            if (baseCurrency.equals(currencyName)) {
                 return true;
             }
         }
         return false;
     }
 
-    public List<CryptocurrencyInfoEntity> getSelectedPageFromDB(
+    public List<CryptoDataPrice> getSelectedPageFromDB(
             String currencyName, int pageNumber, int pageSize
     ) throws NonexistentCurrencyName {
 
-        if (isExistentCurrencyName(currencyName)) {
+        if (isCurrencyExists(currencyName)) {
             Pageable pageable = PageRequest.of(pageNumber, pageSize);
-            return cryptoInfoRepo.findAllByCurrencyNameOrderByPriceAsc(currencyName, pageable);
+            return cryptoInfoRepo.findAllByBaseCurrencyOrderByPriceAsc(currencyName, pageable);
         } else {
             throw new NonexistentCurrencyName(currencyName);
         }

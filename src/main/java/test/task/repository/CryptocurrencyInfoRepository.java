@@ -3,18 +3,16 @@ package test.task.repository;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
-import test.task.entity.CryptocurrencyInfoEntity;
+import test.task.entity.CryptoDataPrice;
 
 import java.util.List;
 
 @Repository
-public interface CryptocurrencyInfoRepository extends MongoRepository<CryptocurrencyInfoEntity, String> {
+public interface CryptocurrencyInfoRepository extends MongoRepository<CryptoDataPrice, String> {
 
-    //Find MIN price
-    CryptocurrencyInfoEntity findTopByCurrencyNameOrderByPriceAsc(String currencyName);
+    CryptoDataPrice findTopByBaseCurrencyOrderByPriceAsc(String baseCurrencyName);
 
-    //Find MAX price
-    CryptocurrencyInfoEntity findTopByCurrencyNameOrderByPriceDesc(String currencyName);
+    CryptoDataPrice findTopByBaseCurrencyOrderByPriceDesc(String baseCurrencyName);
 
-    List<CryptocurrencyInfoEntity> findAllByCurrencyNameOrderByPriceAsc(String currencyName, Pageable pageable);
+    List<CryptoDataPrice> findAllByBaseCurrencyOrderByPriceAsc(String baseCurrencyName, Pageable pageable);
 }
