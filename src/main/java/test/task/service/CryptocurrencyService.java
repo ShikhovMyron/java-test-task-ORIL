@@ -12,8 +12,6 @@ import java.util.List;
 
 @Service
 public class CryptocurrencyService {
-//    static final Logger logger = Logger.getLogger(CryptocurrencyService.class);
-
     private final AppProperties appProperties;
     private final CryptocurrencyInfoRepository cryptoInfoRepo;
 
@@ -44,15 +42,6 @@ public class CryptocurrencyService {
         }
     }
 
-    private boolean isCurrencyExists(String currencyName) {
-        for (String baseCurrency : appProperties.currencyPairs().keySet()) {
-            if (baseCurrency.equals(currencyName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     public List<CryptoDataPrice> getWithPagination(
             String currencyName, int pageNumber, int pageSize
     ) throws NonexistentCurrencyName {
@@ -63,5 +52,14 @@ public class CryptocurrencyService {
         } else {
             throw new NonexistentCurrencyName(currencyName);
         }
+    }
+
+    private boolean isCurrencyExists(String currencyName) {
+        for (String baseCurrency : appProperties.currencyPairs().keySet()) {
+            if (baseCurrency.equals(currencyName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

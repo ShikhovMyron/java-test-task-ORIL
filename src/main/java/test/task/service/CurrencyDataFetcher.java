@@ -1,7 +1,6 @@
 package test.task.service;
 
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import test.task.config.AppProperties;
@@ -9,7 +8,6 @@ import test.task.entity.CryptoDataPrice;
 import test.task.repository.CryptocurrencyInfoRepository;
 import test.task.utils.CryptoDataUtils;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -43,10 +41,9 @@ public class CurrencyDataFetcher {
     private CryptoDataPrice getCryptoDataPrice(String pair) {
         try {
             return CryptoDataUtils.getCryptoDataFromCEX("https://cex.io/api/last_price/" + pair);
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             return null;
         }
     }
-
 }

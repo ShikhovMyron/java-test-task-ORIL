@@ -23,8 +23,8 @@ public class CryptoDataPrice {
     private final String targetCurrency;
     private final String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-    public CryptoDataPrice(String price, String baseCurrency, String targetCurrency) {
-        this.price = new BigDecimal(price);
+    public CryptoDataPrice(BigDecimal price, String baseCurrency, String targetCurrency) {
+        this.price = price;
         this.baseCurrency = baseCurrency;
         this.targetCurrency = targetCurrency;
     }

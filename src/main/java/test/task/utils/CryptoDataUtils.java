@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import test.task.entity.CryptoDataPrice;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.URL;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -15,7 +16,7 @@ public class CryptoDataUtils {
 
     public static CryptoDataPrice getCryptoDataFromCEX(String url) throws IOException {
         JSONObject json = getJsonFromUrl(url);
-        String price = json.getString("lprice");
+        BigDecimal price = new BigDecimal(json.getString("lprice"));
         String baseCurrency = json.getString("curr1");
         String targetCurrency = json.getString("curr2");
         return new CryptoDataPrice(price, baseCurrency, targetCurrency);
