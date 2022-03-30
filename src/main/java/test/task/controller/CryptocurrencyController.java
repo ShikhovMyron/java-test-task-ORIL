@@ -1,5 +1,6 @@
 package test.task.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,30 +12,48 @@ import test.task.service.CryptocurrencyService;
 @RequestMapping("/cryptocurrencies")
 public class CryptocurrencyController {
 
+    static final Logger logger = Logger.getLogger(CryptocurrencyController.class);
     private final CryptocurrencyService cryptocurrencyService;
 
     public CryptocurrencyController(CryptocurrencyService cryptocurrencyService) {
         this.cryptocurrencyService = cryptocurrencyService;
     }
 
+    @GetMapping
+    public ResponseEntity<Object> getSelectedPage(
+            @RequestParam(value = "name", defaultValue = "") String currencyName,
+            @RequestParam(value = "page", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "size", defaultValue = "10") int pageSize
+    ) {
+        try {
+            return ResponseEntity.ok(cryptocurrencyService
+                    .getSelectedPageFromDB(currencyName, pageNumber, pageSize));
+        } catch (Exception e) {
+            logger.warn(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     @GetMapping("/minprice")
-    public ResponseEntity<String> getMinPrice(
+    public ResponseEntity<Object> getMinPrice(
             @RequestParam(value = "name", defaultValue = "") String currencyName
     ) {
         try {
             return ResponseEntity.ok(cryptocurrencyService.getMinCryptoPrice(currencyName));
         } catch (Exception e) {
+            logger.warn(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @GetMapping("/maxprice")
-    public ResponseEntity<String> getMaxPrice(
+    public ResponseEntity<Object> getMaxPrice(
             @RequestParam(value = "name", defaultValue = "") String currencyName
     ) {
         try {
             return ResponseEntity.ok(cryptocurrencyService.getMaxCryptoPrice(currencyName));
         } catch (Exception e) {
+            logger.warn(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

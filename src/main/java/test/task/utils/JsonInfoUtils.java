@@ -3,20 +3,20 @@ package test.task.utils;
 import org.apache.log4j.Logger;
 import org.json.JSONException;
 import org.json.JSONObject;
-import test.task.model.CryptocurrencyInfoModel;
+import test.task.entity.CryptocurrencyInfoEntity;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
-public class JsonInfoModel {
-    static final Logger logger = Logger.getLogger(JsonInfoModel.class);
+public class JsonInfoUtils {
+    static final Logger logger = Logger.getLogger(JsonInfoUtils.class);
 
-    public static CryptocurrencyInfoModel getCryptoInfoFromJsonCEX(JSONObject json) {
+    public static CryptocurrencyInfoEntity getCryptoInfoFromJsonCEX(JSONObject json) {
         String price = json.getString("lprice");
         String currencyName = json.getString("curr1");
         String valueName = json.getString("curr2");
-        return new CryptocurrencyInfoModel(price, currencyName, valueName);
+        return new CryptocurrencyInfoEntity(price, currencyName, valueName);
     }
 
     public static JSONObject getJsonFromUrl(String url) throws IOException, JSONException {

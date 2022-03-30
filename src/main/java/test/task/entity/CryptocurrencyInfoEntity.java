@@ -1,4 +1,4 @@
-package test.task.model;
+package test.task.entity;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -10,16 +10,16 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Getter
 @EqualsAndHashCode
 @ToString
-public class CryptocurrencyInfoModel {
+public class CryptocurrencyInfoEntity {
 
-    @Id
-    private String id;
     private final String price;
     private final String currencyName;
     private final String valueName;
+    @Id
+    private String id;
     private String createdAt;
 
-    public CryptocurrencyInfoModel(String price, String currencyName, String valueName) {
+    public CryptocurrencyInfoEntity(String price, String currencyName, String valueName) {
         this.price = price;
         this.currencyName = currencyName;
         this.valueName = valueName;
