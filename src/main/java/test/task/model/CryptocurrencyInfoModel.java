@@ -14,9 +14,9 @@ public class CryptocurrencyInfoModel {
 
     @Id
     private String id;
-    private String price;
-    private String currencyName;
-    private String valueName;
+    private final String price;
+    private final String currencyName;
+    private final String valueName;
     private String createdAt;
 
     public CryptocurrencyInfoModel(String price, String currencyName, String valueName) {

@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 import test.task.config.AppConfiguration;
+import test.task.exeption.NonexistentCurrencyName;
 import test.task.model.CryptocurrencyInfoModel;
 import test.task.repository.CryptocurrencyInfoRepository;
 
@@ -57,5 +58,34 @@ public class CryptocurrencyService {
         } catch (IOException e) {
             logger.warn(e.getMessage());
         }
+    }
+
+    public String getMinCryptoPrice(String currencyName) throws NonexistentCurrencyName {
+        if (isExistentCurrencyName(currencyName)) {
+            CryptocurrencyInfoModel currencyInfo = cryptoInfoRepo
+                    .findTopByCurrencyNameOrderByPriceAsc(currencyName);
+            return currencyInfo.getPrice() + "";
+        } else {
+            throw new NonexistentCurrencyName(currencyName);
+        }
+    }
+
+    public String getMaxCryptoPrice(String currencyName) throws NonexistentCurrencyName {
+        if (isExistentCurrencyName(currencyName)) {
+            CryptocurrencyInfoModel currencyInfo = cryptoInfoRepo
+                    .findTopByCurrencyNameOrderByPriceDesc(currencyName);
+            return currencyInfo.getPrice() + "";
+        } else {
+            throw new NonexistentCurrencyName(currencyName);
+        }
+    }
+
+    private boolean isExistentCurrencyName(String currencyName) {
+        for (String s : appConfiguration.currencyPairList()) {
+            if (s.split("/")[0].equals(currencyName)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

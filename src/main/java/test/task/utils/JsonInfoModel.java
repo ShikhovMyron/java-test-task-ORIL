@@ -14,9 +14,9 @@ public class JsonInfoModel {
 
     public static CryptocurrencyInfoModel getCryptoInfoFromJsonCEX(JSONObject json) {
         String price = json.getString("lprice");
-        String currency_name = json.getString("curr1");
-        String value_name = json.getString("curr2");
-        return new CryptocurrencyInfoModel(price, currency_name, value_name);
+        String currencyName = json.getString("curr1");
+        String valueName = json.getString("curr2");
+        return new CryptocurrencyInfoModel(price, currencyName, valueName);
     }
 
     public static JSONObject getJsonFromUrl(String url) throws IOException, JSONException {
