@@ -12,17 +12,17 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @ToString
 public class CryptocurrencyInfoModel {
 
-    private final String price;
-    private final String currency_name;
-    private final String value_name;
     @Id
     private String id;
+    private String price;
+    private String currencyName;
+    private String valueName;
     private String createdAt;
 
-    public CryptocurrencyInfoModel(String price, String currency_name, String value_name) {
+    public CryptocurrencyInfoModel(String price, String currencyName, String valueName) {
         this.price = price;
-        this.currency_name = currency_name;
-        this.value_name = value_name;
+        this.currencyName = currencyName;
+        this.valueName = valueName;
 //        this.createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
     }

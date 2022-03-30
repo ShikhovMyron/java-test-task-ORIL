@@ -6,4 +6,10 @@ import test.task.model.CryptocurrencyInfoModel;
 
 @Repository
 public interface CryptocurrencyInfoRepository extends MongoRepository<CryptocurrencyInfoModel, String> {
+
+    //Find MIN price
+    CryptocurrencyInfoModel findTopByCurrencyNameOrderByPriceAsc(String currencyName);
+
+    //Find MAX price
+    CryptocurrencyInfoModel findTopByCurrencyNameOrderByPriceDesc(String currencyName);
 }
