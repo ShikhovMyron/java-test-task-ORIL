@@ -1,7 +1,5 @@
 package test.task.service;
 
-import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -10,14 +8,7 @@ import test.task.entity.CryptoDataPrice;
 import test.task.exeption.NonexistentCurrencyName;
 import test.task.repository.CryptocurrencyInfoRepository;
 
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-
-import static test.task.utils.JsonInfoUtils.getCryptoInfoFromJsonCEX;
-import static test.task.utils.JsonInfoUtils.getJsonFromUrl;
 
 @Service
 public class CryptocurrencyService {
@@ -62,7 +53,7 @@ public class CryptocurrencyService {
         return false;
     }
 
-    public List<CryptoDataPrice> getSelectedPageFromDB(
+    public List<CryptoDataPrice> getWithPagination(
             String currencyName, int pageNumber, int pageSize
     ) throws NonexistentCurrencyName {
 

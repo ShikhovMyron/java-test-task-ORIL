@@ -12,7 +12,7 @@ import test.task.service.CryptocurrencyService;
 @RequestMapping("/cryptocurrencies")
 public class CryptocurrencyController {
 
-   private static final Logger logger = Logger.getLogger(CryptocurrencyController.class);
+    private static final Logger logger = Logger.getLogger(CryptocurrencyController.class);
     private final CryptocurrencyService cryptocurrencyService;
 
     public CryptocurrencyController(CryptocurrencyService cryptocurrencyService) {
@@ -27,7 +27,7 @@ public class CryptocurrencyController {
     ) {
         try {
             return ResponseEntity.ok(cryptocurrencyService
-                    .getSelectedPageFromDB(currencyName, pageNumber, pageSize));
+                    .getWithPagination(currencyName, pageNumber, pageSize));
         } catch (Exception e) {
             logger.warn(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());

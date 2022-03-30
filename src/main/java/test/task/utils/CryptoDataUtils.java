@@ -7,21 +7,23 @@ import test.task.entity.CryptoDataPrice;
 
 import java.io.*;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
 
-public class JsonInfoUtils {
-    static final Logger logger = Logger.getLogger(JsonInfoUtils.class);
+import static java.nio.charset.StandardCharsets.UTF_8;
 
-    public static CryptoDataPrice getCryptoInfoFromJsonCEX(JSONObject json) {
+public class CryptoDataUtils {
+    private static final Logger logger = Logger.getLogger(CryptoDataUtils.class);
+
+    public static CryptoDataPrice getCryptoDataFromCEX(String url) throws IOException {
+        JSONObject json = getJsonFromUrl(url);
         String price = json.getString("lprice");
-        String currencyName = json.getString("curr1");
-        String valueName = json.getString("curr2");
-        return new CryptoDataPrice(price, currencyName, valueName);
+        String baseCurrency = json.getString("curr1");
+        String targetCurrency = json.getString("curr2");
+        return new CryptoDataPrice(price, baseCurrency, targetCurrency);
     }
 
     public static JSONObject getJsonFromUrl(String url) throws IOException, JSONException {
         try (InputStream is = new URL(url).openStream()) {
-            BufferedReader rd = new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
+            BufferedReader rd = new BufferedReader(new InputStreamReader(is, UTF_8));
             String jsonText = readAll(rd);
 
             logger.info("Got Json:\t" + jsonText);
