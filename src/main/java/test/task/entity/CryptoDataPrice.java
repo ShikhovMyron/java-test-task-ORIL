@@ -21,12 +21,16 @@ public class CryptoDataPrice {
     private final BigDecimal price;
     private final String baseCurrency;
     private final String targetCurrency;
-    private final String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
+    private String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
     public CryptoDataPrice(BigDecimal price, String baseCurrency, String targetCurrency) {
         this.price = price;
         this.baseCurrency = baseCurrency;
         this.targetCurrency = targetCurrency;
+    }
+
+    public void setCreatedAt(String createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getPrice() {

@@ -29,7 +29,7 @@ public class CryptocurrencyController {
             return ResponseEntity.ok(cryptocurrencyService
                     .getWithPagination(currencyName, pageNumber, pageSize));
         } catch (Exception e) {
-            logger.warn(e.getMessage());
+            logger.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -41,7 +41,7 @@ public class CryptocurrencyController {
         try {
             return ResponseEntity.ok(cryptocurrencyService.getMinCryptoPrice(currencyName));
         } catch (Exception e) {
-            logger.warn(e.getMessage());
+            logger.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
@@ -53,7 +53,7 @@ public class CryptocurrencyController {
         try {
             return ResponseEntity.ok(cryptocurrencyService.getMaxCryptoPrice(currencyName));
         } catch (Exception e) {
-            logger.warn(e.getMessage());
+            logger.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
