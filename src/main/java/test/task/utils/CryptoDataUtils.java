@@ -22,7 +22,7 @@ public class CryptoDataUtils {
         return new CryptoDataPrice(price, baseCurrency, targetCurrency);
     }
 
-    public static JSONObject getJsonFromUrl(String url) throws IOException, JSONException {
+    private static JSONObject getJsonFromUrl(String url) throws IOException, JSONException {
         try (InputStream is = new URL(url).openStream()) {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, UTF_8));
             String jsonText = readAll(rd);

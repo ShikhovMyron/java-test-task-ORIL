@@ -24,7 +24,6 @@ public class CurrencyDataFetcher {
         this.cryptoInfoRepo = cryptoInfoRepo;
     }
 
-
     @Scheduled(fixedDelay = 30000)
     public void saveCryptocurrencyInfo() {
         List<CryptoDataPrice> cryptocurrencyInfo = appProperties.getCurrencyPairs()
