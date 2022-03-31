@@ -11,7 +11,6 @@ public class AppProperties {
     public AppProperties(Map<String, String> currencyPairs) {
         this.currencyPairs = currencyPairs;
     }
-
     public Map<String, String> getCurrencyPairs() {
         return currencyPairs;
     }

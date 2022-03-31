@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import test.task.service.CSVService;
 import test.task.service.CryptocurrencyService;
 
 @RestController
@@ -14,9 +15,14 @@ public class CryptocurrencyController {
 
     private static final Logger logger = Logger.getLogger(CryptocurrencyController.class);
     private final CryptocurrencyService cryptocurrencyService;
+    private final CSVService csvService;
 
-    public CryptocurrencyController(CryptocurrencyService cryptocurrencyService) {
+    public CryptocurrencyController(
+            CryptocurrencyService cryptocurrencyService,
+            CSVService csvService
+    ) {
         this.cryptocurrencyService = cryptocurrencyService;
+        this.csvService = csvService;
     }
 
     @GetMapping
@@ -52,6 +58,17 @@ public class CryptocurrencyController {
     ) {
         try {
             return ResponseEntity.ok(cryptocurrencyService.getMaxCryptoPrice(currencyName));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/csv")
+    public ResponseEntity<Object> generateCSV() {
+        try {
+            csvService.saveInfoCSV();
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             logger.error(e.getMessage());
             return ResponseEntity.badRequest().body(e.getMessage());
