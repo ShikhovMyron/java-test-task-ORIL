@@ -8,7 +8,6 @@ spring:
 
 app:
   config:
-    delimiter: "/"
     currencyPairs:
       BTC: USD
       ETH: USD

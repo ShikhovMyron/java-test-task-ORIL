@@ -27,7 +27,7 @@ public class CurrencyDataFetcher {
 
     @Scheduled(fixedDelay = 30000)
     public void saveCryptocurrencyInfo() {
-        List<CryptoDataPrice> cryptocurrencyInfo = appProperties.currencyPairs()
+        List<CryptoDataPrice> cryptocurrencyInfo = appProperties.getCurrencyPairs()
                 .entrySet()
                 .stream()
                 .map(entry -> entry.getKey() + "/" + entry.getValue())
