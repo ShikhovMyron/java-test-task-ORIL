@@ -54,7 +54,7 @@ public class CryptocurrencyService {
         }
     }
 
-    public boolean isCurrencyExists(String currencyName) {
+    private boolean isCurrencyExists(String currencyName) {
         for (String baseCurrency : appProperties.getCurrencyPairs().keySet()) {
             if (baseCurrency.equals(currencyName)) {
                 return true;

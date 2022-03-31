@@ -54,6 +54,33 @@ public class CryptocurrencyServiceIT {
         );
     }
 
+    @Test
+    void getMaxCryptoPricePositiveTest() throws NonexistentCurrencyName {
+        CryptoDataPrice testCryptoDataPrice = getTestCryptoDataPrice();
+        String baseCurrency = getBaseCurrencyFromConfigOrEmpty();
+
+        Mockito.doReturn(AppTestProperties.currencyPairs).when(appProperties).getCurrencyPairs();
+        Mockito.doReturn(testCryptoDataPrice)
+                .when(cryptoInfoRepo).findTopByBaseCurrencyOrderByPriceDesc(Mockito.anyString());
+
+        Assertions.assertEquals(
+                new BigDecimal(testCryptoDataPrice.getPrice()).toString()
+                , cryptocurrencyService.getMaxCryptoPrice(baseCurrency)
+        );
+    }
+
+    @Test
+    void getMaxCryptoPriceExceptionTest() {
+        Mockito.doReturn(AppTestProperties.currencyPairs).when(appProperties).getCurrencyPairs();
+        Mockito.doReturn(getTestCryptoDataPrice())
+                .when(cryptoInfoRepo).findTopByBaseCurrencyOrderByPriceDesc(Mockito.anyString());
+
+        Assertions.assertThrows(
+                NonexistentCurrencyName.class
+                , () -> cryptocurrencyService.getMaxCryptoPrice("")
+        );
+    }
+
     private CryptoDataPrice getTestCryptoDataPrice() {
         return new CryptoDataPrice(
                 new BigDecimal("100"),
