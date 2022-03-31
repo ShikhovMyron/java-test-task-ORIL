@@ -8,25 +8,25 @@ import java.math.BigDecimal;
 
 public class DefaultTestUtils {
 
-    public CryptoDataPrice getTestCryptoDataPrice() {
+    public static CryptoDataPrice getTestCryptoDataPrice() {
         return new CryptoDataPrice(
                 new BigDecimal("100"),
                 getBaseCurrencyFromConfig(),
                 getTargetCurrencyFromConfig());
     }
 
-    public CryptoDataPrice getTestCryptoDataPriceInvalidBaseCurrency() {
+    public static CryptoDataPrice getTestCryptoDataPriceInvalidBaseCurrency() {
         return new CryptoDataPrice(
                 new BigDecimal("100"),
                 "",
                 getTargetCurrencyFromConfig());
     }
 
-    public String getBaseCurrencyFromConfig() {
+    public static String getBaseCurrencyFromConfig() {
         return AppTestProperties.currencyPairs.keySet().stream().findFirst().orElse(null);
     }
 
-    public String getTargetCurrencyFromConfig() {
+    public static String getTargetCurrencyFromConfig() {
         return AppTestProperties.currencyPairs.keySet().stream().findFirst().orElse(null);
     }
 

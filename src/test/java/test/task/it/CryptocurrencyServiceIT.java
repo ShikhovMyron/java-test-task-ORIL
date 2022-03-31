@@ -24,7 +24,6 @@ import java.util.List;
 public class CryptocurrencyServiceIT {
     @Autowired
     private CryptocurrencyService cryptocurrencyService;
-    private final DefaultTestUtils defaultTestUtils = new DefaultTestUtils();
 
     @MockBean
     private AppProperties appProperties;
@@ -33,8 +32,8 @@ public class CryptocurrencyServiceIT {
 
     @Test
     void getMinCryptoPricePositiveTest() throws NonexistentCurrencyName {
-        CryptoDataPrice testCryptoDataPrice = getTestCryptoDataPrice();
-        String baseCurrency = getBaseCurrencyFromConfig();
+        CryptoDataPrice testCryptoDataPrice = DefaultTestUtils.getTestCryptoDataPrice();
+        String baseCurrency = DefaultTestUtils.getBaseCurrencyFromConfig();
 
         Mockito.doReturn(AppTestProperties.currencyPairs).when(appProperties).getCurrencyPairs();
         Mockito.doReturn(testCryptoDataPrice)
@@ -49,7 +48,7 @@ public class CryptocurrencyServiceIT {
     @Test
     void getMinCryptoPriceExceptionTest() {
         Mockito.doReturn(AppTestProperties.currencyPairs).when(appProperties).getCurrencyPairs();
-        Mockito.doReturn(getTestCryptoDataPrice())
+        Mockito.doReturn(DefaultTestUtils.getTestCryptoDataPrice())
                 .when(cryptoInfoRepo).findTopByBaseCurrencyOrderByPriceAsc(Mockito.anyString());
 
         Assertions.assertThrows(
@@ -60,8 +59,8 @@ public class CryptocurrencyServiceIT {
 
     @Test
     void getMaxCryptoPricePositiveTest() throws NonexistentCurrencyName {
-        CryptoDataPrice testCryptoDataPrice = getTestCryptoDataPrice();
-        String baseCurrency = getBaseCurrencyFromConfig();
+        CryptoDataPrice testCryptoDataPrice = DefaultTestUtils.getTestCryptoDataPrice();
+        String baseCurrency = DefaultTestUtils.getBaseCurrencyFromConfig();
 
         Mockito.doReturn(AppTestProperties.currencyPairs).when(appProperties).getCurrencyPairs();
         Mockito.doReturn(testCryptoDataPrice)
@@ -76,7 +75,7 @@ public class CryptocurrencyServiceIT {
     @Test
     void getMaxCryptoPriceExceptionTest() {
         Mockito.doReturn(AppTestProperties.currencyPairs).when(appProperties).getCurrencyPairs();
-        Mockito.doReturn(getTestCryptoDataPrice())
+        Mockito.doReturn(DefaultTestUtils.getTestCryptoDataPrice())
                 .when(cryptoInfoRepo).findTopByBaseCurrencyOrderByPriceDesc(Mockito.anyString());
 
         Assertions.assertThrows(
@@ -87,18 +86,18 @@ public class CryptocurrencyServiceIT {
 
     @Test
     void getWithPaginationPositiveTest() throws NonexistentCurrencyName {
-        List<CryptoDataPrice> testCryptoDataPrices = new ArrayList<>();
+        List<CryptoDataPrice> expected = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            testCryptoDataPrices.add(getTestCryptoDataPrice());
+            expected.add(DefaultTestUtils.getTestCryptoDataPrice());
         }
 
         Mockito.doReturn(AppTestProperties.currencyPairs).when(appProperties).getCurrencyPairs();
-        Mockito.doReturn(testCryptoDataPrices).when(cryptoInfoRepo)
+        Mockito.doReturn(expected).when(cryptoInfoRepo)
                 .findAllByBaseCurrencyOrderByPriceAsc(Mockito.anyString(), Mockito.any());
 
         Assertions.assertEquals(
-                testCryptoDataPrices
-                , cryptocurrencyService.getWithPagination(getBaseCurrencyFromConfig(), 0, 5)
+                expected
+                , cryptocurrencyService.getWithPagination(DefaultTestUtils.getBaseCurrencyFromConfig(), 0, 5)
         );
     }
 
@@ -112,20 +111,5 @@ public class CryptocurrencyServiceIT {
                 NonexistentCurrencyName.class
                 , () -> cryptocurrencyService.getWithPagination("", 0, 5)
         );
-    }
-
-    private CryptoDataPrice getTestCryptoDataPrice() {
-        return new CryptoDataPrice(
-                new BigDecimal("100"),
-                getBaseCurrencyFromConfig(),
-                getTargetCurrencyFromConfig());
-    }
-
-    private String getBaseCurrencyFromConfig() {
-        return AppTestProperties.currencyPairs.keySet().stream().findFirst().orElse(null);
-    }
-
-    private String getTargetCurrencyFromConfig() {
-        return AppTestProperties.currencyPairs.keySet().stream().findFirst().orElse(null);
     }
 }
