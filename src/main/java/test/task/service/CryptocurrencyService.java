@@ -8,6 +8,7 @@ import test.task.entity.CryptoDataPrice;
 import test.task.exeption.NonexistentCurrencyName;
 import test.task.repository.CryptocurrencyInfoRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -22,7 +23,7 @@ public class CryptocurrencyService {
         this.cryptoInfoRepo = cryptoInfoRepo;
     }
 
-    public String getMinCryptoPrice(String currencyName) throws NonexistentCurrencyName {
+    public BigDecimal getMinCryptoPrice(String currencyName) throws NonexistentCurrencyName {
         if (isCurrencyExists(currencyName)) {
             CryptoDataPrice currencyInfo = cryptoInfoRepo
                     .findTopByBaseCurrencyOrderByPriceAsc(currencyName);
@@ -32,7 +33,7 @@ public class CryptocurrencyService {
         }
     }
 
-    public String getMaxCryptoPrice(String currencyName) throws NonexistentCurrencyName {
+    public BigDecimal getMaxCryptoPrice(String currencyName) throws NonexistentCurrencyName {
         if (isCurrencyExists(currencyName)) {
             CryptoDataPrice currencyInfo = cryptoInfoRepo
                     .findTopByBaseCurrencyOrderByPriceDesc(currencyName);

@@ -1,17 +1,13 @@
 package test.task.config;
 
+import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Map;
 
 @ConfigurationProperties(prefix = "app.config")
+@Data
 public class AppProperties {
-    private final Map<String, String> currencyPairs;
-
-    public AppProperties(Map<String, String> currencyPairs) {
-        this.currencyPairs = currencyPairs;
-    }
-    public Map<String, String> getCurrencyPairs() {
-        return currencyPairs;
-    }
+    private Map<String, String> currencyPairs;
+    private String outputFileName;
 }

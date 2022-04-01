@@ -12,3 +12,4 @@ app:
       BTC: USD
       ETH: USD
       XRP: USD
+    outputFileName: "file"

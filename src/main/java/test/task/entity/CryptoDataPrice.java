@@ -33,7 +33,4 @@ public class CryptoDataPrice {
         this.createdAt = createdAt;
     }
 
-    public String getPrice() {
-        return price.toString();
-    }
 }

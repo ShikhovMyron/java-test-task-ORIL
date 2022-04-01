@@ -4,11 +4,13 @@ import com.opencsv.CSVWriter;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import test.task.config.AppProperties;
+import test.task.exeption.NonexistentCurrencyName;
 import test.task.utils.CryptoDataUtils;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 @Service
 public class CSVService {
@@ -23,7 +25,7 @@ public class CSVService {
     }
 
     public void saveInfoCSV() throws IOException {
-        File file = new File("file.csv");
+        File file = new File(appProperties.getOutputFileName() + ".csv");
         file.createNewFile();
         file = file.getAbsoluteFile();
         try (FileWriter outputFile = new FileWriter(file);
@@ -33,10 +35,14 @@ public class CSVService {
 
             for (String baseCurrency : appProperties.getCurrencyPairs().keySet()) {
                 try {
-                    String minCryptoPrice = cryptocurrencyService.getMinCryptoPrice(baseCurrency);
-                    String maxCryptoPrice = cryptocurrencyService.getMaxCryptoPrice(baseCurrency);
-                    writer.writeNext(new String[]{baseCurrency, minCryptoPrice, maxCryptoPrice});
-                } catch (Exception e) {
+                    BigDecimal minCryptoPrice = cryptocurrencyService.getMinCryptoPrice(baseCurrency);
+                    BigDecimal maxCryptoPrice = cryptocurrencyService.getMaxCryptoPrice(baseCurrency);
+                    writer.writeNext(new String[]{
+                            baseCurrency,
+                            minCryptoPrice.toString(),
+                            maxCryptoPrice.toString()
+                    });
+                } catch (NonexistentCurrencyName e) {
                     logger.error(e.getMessage());
                 }
             }
