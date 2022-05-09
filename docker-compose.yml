@@ -1,0 +1,9 @@
+version: '3.3'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongoDB
+    restart: unless-stopped
+    ports:
+      - 27017:27017
